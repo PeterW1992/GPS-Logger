@@ -1,0 +1,1 @@
+stayLength=5||stayRadius=400||distVal=0.00004
