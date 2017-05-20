@@ -25,7 +25,7 @@ startPointPKFK = " PRIMARY KEY (StartTime) FOREIGN KEY (startStayPoint) REFERENC
 updateType = " Type TEXT"; updateDT = " DateTime TEXT"; updateStart = " StartTime REAL"; updateEnd = " EndTime REAL"
 
 # tblErrors columns
-errorType = " Type TEXT"; fileName = " File TEXT"; sysTime = " SystemTime TEXT"; gpsTime = " gpsTime TEXT"; errorDesc = " ErrorDesc TEXT"
+errorType = " Type TEXT"; fileName = " File TEXT"; sysTime = " SystemTime REAL"; gpsTime = " gpsTime TEXT"; errorDesc = " ErrorDesc TEXT"
 
 createTb11 = "CREATE TABLE %s (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" % (tblGPSP, lat, lon, dateTime, alt, speed, epx, epy, epz, ept, mode, track)
 createTbl2 = "CREATE TABLE %s (%s, %s)" % (tblSP, lat, lon)

@@ -449,10 +449,8 @@ def updateSettings(settings):
     file.close()
     return True
 
-def addError(error):
-    errorFile = open("../Logs/Errors.txt", 'a')
-    errorFile.write(str(error) + "\n")
-    errorFile.close()
+def addError(errorType, fileName, gpsTime, errorDesc):
+    runInsert("INSERT INTO tblErrors VALUES (%s, %s, %f, %s, %s)") %(errorType, fileName, timer.time(), gpsTime, errorDesc)
 
 def writeToFile(points):
     print("%d Points writing to file" % (len(points),)) 

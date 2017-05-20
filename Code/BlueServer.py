@@ -79,6 +79,7 @@ try:
 	setUp()
 	
 except IOError:
+    addError("IOError", "BlueServer.py", "", "IO Error in BlueServer.py")
     print("IO Error!")
     pass
 
@@ -86,7 +87,6 @@ except KeyboardInterrupt:
     print "disconnected"
     client_sock.close()
     server_sock.close()
-    print "all done"
 
 client_sock.close()
 server_sock.close()

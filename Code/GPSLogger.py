@@ -61,21 +61,19 @@ while True:
                             performStayPointUpdate()
                             updatedStays = True
                         except Exception, e:
-                            addError("StayPointUpdateError", e)
+                            addError("StayPointUpdateError" , "GPSLogger.py", "", str(e))
                         try:
                             if updatedStays:
                                 performJourneyUpdate()
                         except Exception, e:
-                            addError("JourneyUpdateError", e)
+                            addError("JourneyUpdateError", "GPSLogger.py", "",  str(e))
                         updateRan = True	
             except Exception, e:
-                print str(e)
-                addError("MainError", e)
+                addError(str(e), "GPSLogger.py", "", "Error Inserting points")
     except KeyboardInterrupt:
         quit()
     except StopIteration:
         session = None
         print("GPSD has terminated")
     except Exception, e:
-        print str(e)
-        #addError("Main.py",e)
+        addError("GPSLogger Global Try Error", "GPSLogger.py", "",  str(e))
