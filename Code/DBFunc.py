@@ -454,11 +454,6 @@ def addError(error):
     errorFile.write(str(error) + "\n")
     errorFile.close()
 
-def addError(fileName, error):
-    errorFile = open("../Logs/" + fileName + ".txt", 'a')
-    errorFile.write(str(error) + "\n")
-    errorFile.close()
-
 def writeToFile(points):
     print("%d Points writing to file" % (len(points),)) 
     gpxFile = open("../Logs/gpxOutput.gpx", 'w')

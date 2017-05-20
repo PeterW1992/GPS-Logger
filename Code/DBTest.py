@@ -35,21 +35,20 @@ print("\n-------------------------Test Outputs-------------------------")
 #rerunUpdates()
 
 #performJourneyUpdate()
-start = "2017-05-10T00:00:00"
-end = "2017-05-11T00:00:00"
-query = "SELECT * FROM tblGPSPoints WHERE strftime('%Y-%m-%dT%H:%M:%S', dateTime) BETWEEN strftime('%Y-%m-%dT%H:%M:%S',\'" + start + "\') AND strftime('%Y-%m-%dT%H:%M:%S',\'" + end + "\')"
-points = runQuery(query)
-writeToFile(points)
+#start = "2017-05-10T00:00:00"
+#end = "2017-05-11T00:00:00"
+#query = "SELECT * FROM tblGPSPoints WHERE strftime('%Y-%m-%dT%H:%M:%S', dateTime) BETWEEN strftime('%Y-%m-%dT%H:%M:%S',\'" + start + "\') AND strftime('%Y-%m-%dT%H:%M:%S',\'" + end + "\')"
+#points = runQuery(query)
+#writeToFile(points)
 
-query = "SELECT *, endTime - startTime AS Seconds FROM tblUpdates"
+query = "SELECT *, endTime - startTime AS Seconds FROM tblUpdates ORDER BY Type, dateTime ASC"
 records = runQuery(query)
-for record in records:
-    print(record)
-
-#removeStayPointUpdates()
-#removeJourneyUpdates()
-#runDelete("DROP TABLE tblUpdates")
-#import CreateTables
+recordsAmount = len(records)
+i = 0
+while i < recordsAmount:
+    record = records[i]
+    print("Type: %s, Time: %s, Duration: %d" %(record[0], getDateTime(record[1]), record[4]))
+    i += 1
 
 print("--------------------------------------------------------------")
 
