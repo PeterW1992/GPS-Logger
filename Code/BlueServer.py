@@ -48,6 +48,7 @@ try:
             journeys = getJourneysAfter(journeyDate)
             arrayReturn['journeys'] = journeys
             arrayReturn['journeyPoints'] = getJourneyPoints(journeys)
+			arrayReturn['loggerStatus'] = getSummary()
             points = arrayReturn
 
 	if command == "getJourneysAfter":
@@ -65,10 +66,6 @@ try:
                 values.append(dataJson["p" + str(i)])
                 i += 1
             points = [(updateSettings(values), )]
-		
-	if command == "getSummary":
-            points = getSummary()
-            print points
 	
 	print(str(len(points)) + " Points being returned")
 	client_sock.send(str(json.dumps(points) + "EndOfTransmission"))
