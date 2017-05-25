@@ -6,5 +6,5 @@ cd /
 cd home/pi/GPS-Logger/Code
 sudo hciconfig hci0 piscan
 sudo python GPSLogger.py &
-sudo python BlueServer.py &
+# sudo python BlueServer.py &
 cd /

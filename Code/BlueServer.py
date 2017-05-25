@@ -48,7 +48,7 @@ try:
             journeys = getJourneysAfter(journeyDate)
             arrayReturn['journeys'] = journeys
             arrayReturn['journeyPoints'] = getJourneyPoints(journeys)
-			arrayReturn['loggerStatus'] = getSummary()
+            arrayReturn['loggerStatus'] = getSummary()
             points = arrayReturn
 
 	if command == "getJourneysAfter":
