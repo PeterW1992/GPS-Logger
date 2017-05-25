@@ -1,4 +1,5 @@
 import sqlite3
+from DBFunc import *
 
 conn = sqlite3.connect('GPSLogger.db')
 cur = conn.cursor()

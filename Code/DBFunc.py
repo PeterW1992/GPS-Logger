@@ -333,7 +333,6 @@ def getJourneyPoints(journeys):
         ids.append(journey[0])
     idStr = str(ids)[1:-1]
     query = "SELECT tblGPSPoints.rowid, Lat, Lon, dateTime, Alt, Speed, Mode, Track, tblJourneyPoints.JourneyID FROM tblJourneyPoints INNER JOIN tblGPSPoints ON tblJourneyPoints.pointID = tblGPSPoints.rowid WHERE tblJourneyPoints.JourneyID IN (" + idStr + ")"
-    print(query)
     points = runQuery(query)
     return points
 
