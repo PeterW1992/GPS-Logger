@@ -9,7 +9,9 @@ tblSP = "tblStayPoints"
 tblSPV = "tblStayPointVisits"
 tblJs = "tblJourneys"
 tblUpdates = "tblUpdates"
+tblJourneyPoints = "tblJourneyPoints"
 tblErrors = "tblErrors"
+tblTimeLogs = "tblTimeLogs"
 
 lat = "Lat REAL"; lon = " Lon REAL"; dateTime = " DateTime TEXT PRIMARY KEY"; alt = " Alt REAL"; speed = " Speed REAL"; 
 epx = " Epx REAL"; epy = " Epy REAL"; epz = " Epz REAL"; ept = " Ept REAL"; mode = " Mode INTEGER"; track = " Track REAL" 
@@ -23,7 +25,11 @@ startStayPoint = " StartStayPoint INTEGER"; endStayPoint = " EndStayPoint INTEGE
 startPointPKFK = " PRIMARY KEY (StartTime) FOREIGN KEY (startStayPoint) REFERENCES %s(ROWID)," % (tblSP); endPointFK = " FOREIGN KEY (endStayPoint) REFERENCES %s(ROWID)" % (tblSP)
 
 # tblUpdate columns
-updateType = " Type TEXT"; updateDT = " DateTime TEXT"; updateStart = " StartTime REAL"; updateEnd = " EndTime REAL"
+updateType = "Type TEXT"; updateDT = "DateTime TEXT"; updateStart = "StartTime REAL"; updateEnd = "EndTime REAL"
+
+# tblJourneyPoints columns
+journeyId = "JourneyId INTEGER"; pointId = "pointID INTEGER"
+journeyPointPKFK = "PRIMARY KEY (pointID) FOREIGN KEY (JourneyID) REFERENCES tblJourneys(ROWID), FOREIGN KEY (pointID) REFERENCES tblGPSPoints(ROWID)"
 
 # tblErrors columns
 errorType = " Type TEXT"; fileName = " File TEXT"; sysTime = " SystemTime REAL"; gpsTime = " gpsTime TEXT"; errorDesc = " ErrorDesc TEXT"
@@ -33,7 +39,7 @@ createTbl2 = "CREATE TABLE %s (%s, %s)" % (tblSP, lat, lon)
 createTbl3 = "CREATE TABLE %s (%s, %s, %s, %s)" % (tblSPV, stayPointId, startTime, endTime, stayPointPKFK)
 createTbl4 = "CREATE TABLE %s (%s, %s, %s, %s, %s, %s)" % (tblJs, startStayPoint, endStayPoint, startTime, endTime, startPointPKFK, endPointFK)
 createTbl5 = "CREATE TABLE %s (%s, %s, %s, %s,)" % (tblUpdates, updateType, updateDT, updateStart, updateEnd)
-createTbl6 = "CREATE TABLE tblJourneyPoints (JourneyId INTEGER, pointID INTEGER, PRIMARY KEY (pointID) FOREIGN KEY (JourneyID) REFERENCES tblJourneys(ROWID), FOREIGN KEY (pointID) REFERENCES tblGPSPoints(ROWID))"
+createTbl6 = "CREATE TABLE &s (%s, %s, %s)" %(tblJourneyPoints, journeyId, pointId, journeyPointPKFK)
 createTbl7 = "CREATE TABLE %s (%s, %s, %s, %s, %s)" %(tblErrors, errorType, fileName, sysTime, gpsTime, errorDesc)
 
 #cur.execute(createTbl1)

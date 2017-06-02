@@ -1,10 +1,11 @@
 # sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
-# sudo lsusf // lists usb devyces 
+# sudo lsusf // lists usb devices 
 # sudo cat /dev/ttyUSB0 // Reads serial data
 
 from DBFunc import *
 import gps
 import os
+import time
 
 os.system("sudo killall gpsd")
 os.system("sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock")
@@ -14,6 +15,7 @@ session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
 tableName = "tblGPSPoints"
 gpsPoints = []
 updateRan = False
+systemStart = time.time()
 while True:
     try:
         report = None
@@ -48,14 +50,13 @@ while True:
                 if hasattr(report, 'track'):
                     track = report.track
                 asTuple = (lat, lon, dateTime, alt, speed, epx, epy, epv, ept, mode, track)
-                print asTuple
                 gpsPoints.append(asTuple)
             try:
                 if len(gpsPoints) >= 60 or (type(speed) is not type(None) and speed < 0.5 and len(gpsPoints) >= 10):
-                    print "Inserting %s points..." % (len(gpsPoints))
-                    runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)			
+                    runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)				
                     gpsPoints = []
                     if not updateRan:
+                        addUpdate("StartUpLog", "", systemStart, time.time())
                         updatedStays = False
                         try:
                             performStayPointUpdate()
@@ -67,7 +68,7 @@ while True:
                                 performJourneyUpdate()
                         except Exception, e:
                             addError("JourneyUpdateError", "GPSLogger.py", "",  str(e))
-                        updateRan = True	
+                        updateRan = True
             except Exception, e:
                 addError(str(e), "GPSLogger.py", "", "Error Inserting points")
     except KeyboardInterrupt:

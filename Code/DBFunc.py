@@ -190,8 +190,8 @@ def getLatestUpdateTime(type):
     lastUpdate = runQuery(query)[0][0]
     return lastUpdate
 
-def addUpdate(type, dateTime, startTime, endTime):
-    update = "INSERT INTO tblUpdates VALUES ('%s', '%s', %f, %f)" % (type, dateTime, startTime, endTime)
+def addUpdate(updateType, dateTime, startTime, endTime):
+    update = "INSERT INTO tblUpdates VALUES ('%s', '%s', %f, %f)" % (updateType, dateTime, startTime, endTime)
     runInsert(update)
 
 def getLatestDateTime():
