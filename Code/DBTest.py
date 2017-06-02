@@ -55,3 +55,8 @@ print("--------------------------------------------------------------")
 tAfter = timer.time()
 totalTime = tAfter - tBefore
 print("Test Runtime: " + str(totalTime) + "s")
+
+print("----------------------------Errors----------------------------")
+errors = runQuery("SELECT * FROM tblErrors")
+for err in errors:
+    print(err)
