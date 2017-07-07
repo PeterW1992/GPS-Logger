@@ -51,30 +51,30 @@ while True:
                     track = report.track
                 asTuple = (lat, lon, dateTime, alt, speed, epx, epy, epv, ept, mode, track)
                 gpsPoints.append(asTuple)
-            try:
-                if len(gpsPoints) >= 60 or (type(speed) is not type(None) and speed < 0.5 and len(gpsPoints) >= 10):
-                    runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)				
-                    gpsPoints = []
-                    if not updateRan:
-                        addUpdate("StartUpLog", "", systemStart, time.time())
-                        updatedStays = False
-                        try:
-                            performStayPointUpdate()
-                            updatedStays = True
-                        except Exception, e:
-                            addError("StayPointUpdateError" , "GPSLogger.py", "", str(e))
-                        try:
-                            if updatedStays:
-                                performJourneyUpdate()
-                        except Exception, e:
-                            addError("JourneyUpdateError", "GPSLogger.py", "",  str(e))
-                        updateRan = True
-            except Exception, e:
-                addError(str(e), "GPSLogger.py", "", "Error Inserting points")
+            if len(gpsPoints) >= 60 or (type(speed) is not type(None) and speed < 0.5 and len(gpsPoints) >= 10):
+                try:
+                    runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)
+                except Exception as e:
+                    addError("Error Adding GPS Points", "GPSLogger.py", "", str(e))
+                gpsPoints = []
+                if not updateRan:
+                    addUpdate("StartUpLog", "", systemStart, time.time())
+                    updatedStays = False
+                    try:
+                        performStayPointUpdate()
+                        updatedStays = True
+                    except Exception as e:
+                        addError("StayPointUpdateError" , "GPSLogger.py", "", str(e))
+                    try:
+                        if updatedStays:
+                            performJourneyUpdate()
+                    except Exception as e:
+                        addError("JourneyUpdateError", "GPSLogger.py", "",  str(e))
+                    updateRan = True
     except KeyboardInterrupt:
         quit()
     except StopIteration:
         session = None
         print("GPSD has terminated")
-    except Exception, e:
+    except Exception as e:
         addError("GPSLogger Global Try Error", "GPSLogger.py", "",  str(e))
