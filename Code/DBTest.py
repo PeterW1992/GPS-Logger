@@ -47,7 +47,8 @@ recordsAmount = len(records)
 i = 0
 while i < recordsAmount:
     record = records[i]
-    print("Type: %s, Time: %s, Duration: %d" %(record[0], getDateTime(record[1]), record[4]))
+    print("Type: %s, Time: %s, Duration: %d" %(record[0], record[1], record[4]))
+#    print("Type: %s, Time: %s, Duration: %d" %(record[0], getDateTime(record[1]), record[4]))
     i += 1
 
 print("--------------------------------------------------------------")

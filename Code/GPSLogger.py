@@ -8,7 +8,7 @@ import os
 import time
 
 os.system("sudo killall gpsd")
-os.system("sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock")
+os.system("sudo gpsd /dev/ttyS0 -F /var/run/gpsd.sock")
 
 session = gps.gps("localhost", "2947")
 session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
