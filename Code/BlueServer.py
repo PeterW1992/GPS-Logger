@@ -1,5 +1,6 @@
 from bluetooth import *
 from DBFunc import *
+from Utils import *
 import json
 
 server_sock = None
@@ -36,7 +37,6 @@ try:
 	dataJson = json.loads(data)
 	command = dataJson["cmd"]
 	print "received command: %s" % command
-
 	client_sock.send("")
 
 	if command == "getDataAfter":

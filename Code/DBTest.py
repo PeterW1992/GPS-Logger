@@ -1,5 +1,6 @@
 from DBFunc import *
 from Utils import *
+from UpdateMethods import *
 import time as timer
 
 #dbFields = ["Lat", "Lon", "DateTime", "Alt", "Speed", "Epx", "Epy", "Epz", "Ept", "Mode", "Track"]
