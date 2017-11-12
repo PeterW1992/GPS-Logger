@@ -33,9 +33,9 @@ print(getLatestJourneyStr())
 tBefore = timer.time()
 print("\n-------------------------Test Outputs-------------------------")
 
-performStayPointUpdate()
-performJourneyUpdate()
-#rerunUpdates()
+#performStayPointUpdate()
+#performJourneyUpdate()
+rerunUpdates()
 
 #query = "SELECT * FROM tblGPSPoints WHERE strftime('%Y-%m-%dT%H:%M:%S', dateTime) BETWEEN strftime('%Y-%m-%dT%H:%M:%S',\'" + start + "\') AND strftime('%Y-%m-%dT%H:%M:%S',\'" + end + "\')"
 #points = runQuery(query)
@@ -60,4 +60,5 @@ print("Test Runtime: " + str(totalTime) + "s")
 print("----------------------------Errors----------------------------")
 errors = runQuery("SELECT * FROM tblErrors")
 for err in errors:
-    print(err)
+    readable = readableFromTimeStamp(err[2])
+    print("%s, %s, %s, %s, %s" %(err[0], err[1], readable, err[3], err[4]))

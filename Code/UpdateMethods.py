@@ -124,16 +124,14 @@ def performStayPointUpdate():
     lastVisit = addStayPointVisits(points)
     if type(lastVisit) != type(None):
         endTime = timer.time()
-        ddUpdate("StayPointUpdate", lastVisit.end, startTime, endTime)
+        addUpdate("StayPointUpdate", lastVisit.end, startTime, endTime)
 	
 	
 
 def performJourneyUpdate():
     startTime = timer.time()
     latestUpdate = getLatestUpdateTime("JourneyUpdate")
-    print("Journey update start: %s" % (latestUpdate)) 
     latestJourney = addJourneysFrom(latestUpdate)
-    print("Add Journeys From Executed")
     if isinstance(latestJourney, Journey):
         endTime = timer.time()
         addUpdate("JourneyUpdate", latestJourney.end, startTime, endTime)

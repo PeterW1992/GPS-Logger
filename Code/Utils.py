@@ -24,6 +24,9 @@ def getDBFileSize():
     fileSize = float(os.path.getsize("GPSLogger.db"))
     return fileSize / 1024 / 1024
 
+def readableFromTimeStamp(tStamp):
+	return dt.datetime.fromtimestamp(tStamp).strftime('%Y-%m-%d %H:%M:%S')
+
 def writeToFile(points):
     print("%d Points writing to file" % (len(points),)) 
     gpxFile = open("../Logs/gpxOutput.gpx", 'w')
@@ -85,3 +88,36 @@ def updateSettings(settings):
     file.write(values)
     file.close()
     return True
+
+def extractReportData(report):
+    mode = None; lon = None; lat = None; dateTime = None; epx = None; epy = None; epv = None; ept = None; speed = None; alt = None; track = None
+    if hasattr(report, 'mode'):
+        mode = report.mode
+    if hasattr(report, 'time'):
+        if str(report.time)[0:4] != "1980":
+            dateTime = str(report.time)
+        if type(mode) is not type(None) and mode == 3 and type(dateTime) is not type(None):
+            if hasattr(report, 'lon'):
+                lon = report.lon
+            if hasattr(report, 'lat'):
+                lat = report.lat
+            if hasattr(report, 'time'):
+                dateTime = str(report.time)
+            if hasattr(report, 'epx'):
+                epx = report.epx
+            if hasattr(report, 'epy'):
+                epy = report.epy
+            if hasattr(report, 'epv'):
+                epv = report.epv
+            if hasattr(report, 'ept'):
+                ept = report.ept
+            if hasattr(report, 'speed'):
+                speed = report.speed
+            if hasattr(report, 'alt'):
+                alt = report.alt
+            if hasattr(report, 'track'):
+                track = report.track
+            asTuple = (lat, lon, dateTime, alt, speed, epx, epy, epv, ept, mode, track)
+            return asTuple
+    return None
+

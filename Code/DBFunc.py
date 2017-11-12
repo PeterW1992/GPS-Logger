@@ -181,5 +181,3 @@ def runQuery(query):
 
 def addError(errorType, fileName, gpsTime, errorDesc):
     runInsert("INSERT INTO tblErrors VALUES (%s, %s, %f, %s, %s)") %(errorType, fileName, timer.time(), gpsTime, errorDesc)
-
-
