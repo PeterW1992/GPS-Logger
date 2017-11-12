@@ -8,7 +8,7 @@ dist = settings["distVal"]
 
 def stayPointsAfter(date):
     global stayRadius;global stayLength
-    if len(date) == 0:
+    if type(date) is type(None):
         query = "SELECT *, rowid FROM tblGPSPoints WHERE LAT IS NOT NULL AND dateTime is not NULL GROUP BY strftime('%Y-%m-%dT%H:%M', dateTime) ORDER BY dateTime ASC"
     else:
         query = "SELECT *, rowid FROM tblGPSPoints WHERE LAT IS NOT NULL AND strftime('%Y-%m-%dT%H:%M:%S', dateTime) >= strftime('%Y-%m-%dT%H:%M:%S',\'" + date + "\') GROUP BY strftime('%Y-%m-%dT%H:%M', dateTime) ORDER BY dateTime ASC"
@@ -70,7 +70,7 @@ def getUniquePoints(points):
                 print("it was none")
     return pointsDict
 
-def processStayPoints(uniquePoints):
+def pairWithExistingStayPoints(uniquePoints):
     global stayRadius
     query = "SELECT rowid, * FROM tblStayPoints"
     existPoints = runQuery(query)
@@ -79,7 +79,7 @@ def processStayPoints(uniquePoints):
             if getDistance(existingPt[1], existingPt[2], stayPoint.lat, stayPoint.lon) <= stayRadius:
                 stayPoint.row_id = existingPt[0]
                 break
-    addStayPoints(uniquePoints)
+    return uniquePoints
 
 def addStayPoints(newPoints):
     conn = sqlite3.connect("GPSLogger.db")
@@ -94,33 +94,39 @@ def addStayPoints(newPoints):
     conn.commit()
     cur.close()
     conn.close()
-    addStayPointVisits(newPoints)
+    return newPoints
 
 def addStayPointVisits(visitPoints):
-    startTime = timer.time()
     list = []
+	latestVisit = None
     for stayPoint in visitPoints:
         visits = visitPoints[stayPoint]
         list.append((stayPoint.row_id, stayPoint.start, stayPoint.end))
         if not type(visits) is type(None):
             for visit in visits:
+				if type(latestVisit) == type(None):
+					latestVisit = visit
+				else if latestVisit.end < visit.end:
+					latestVisit = visit
                 list.append((stayPoint.row_id, visit.start, visit.end))
     runInsertMany("INSERT OR IGNORE INTO tblStayPointVisits VALUES (?,?,?)", list)
     print("%d New visits added" %(len(list)))
-    aDate = getLatestVisit()[0]
-    endTime = timer.time()
-    addUpdate("StayPointUpdate", aDate, startTime, endTime)
+	return latestVisit
+    
 
 def performStayPointUpdate():
-    latest = getLatestUpdateTime("StayPointUpdate")
-    if latest == None:
-        date = "1980-01-01T00:00:00.000Z"
-    else:
-        date = latest
-    print("Stay point update start: %s" % (latest))
+	startTime = timer.time()
+    date = getLatestUpdateTime("StayPointUpdate")
     points = stayPointsAfter(date)
-    uniqPoints = getUniquePoints(points)
-    processStayPoints(uniqPoints)
+    points = getUniquePoints(points)
+    points = pairWithExistingStayPoints(points)
+	points = addStayPoints(points)
+	lastVisit = addStayPointVisits(newPoints)
+	if type(lastVisit) != type(None):
+		endTime = timer.time()
+		addUpdate("StayPointUpdate", lastVisit.end, startTime, endTime)
+	
+	
 
 def performJourneyUpdate():
     startTime = timer.time()
@@ -136,7 +142,7 @@ def addJourneysFrom(date):
     if type(date) is type(None):
         query = "SELECT rowid, * FROM tblStayPointVisits ORDER BY startTime ASC"
     else:
-        query = "SELECT rowid, * FROM tblStayPointVisits WHERE strftime('%Y-%m-%dT%H:%M:%S', startTime) >  strftime('%Y-%m-%dT%H:%M:%S',\'" + str(date) + "\') ORDER BY startTime ASC"
+        query = "SELECT rowid, * FROM tblStayPointVisits WHERE strftime('%Y-%m-%dT%H:%M:%S', startTime) >=  strftime('%Y-%m-%dT%H:%M:%S',\'" + str(date) + "\') ORDER BY startTime ASC"
     visits = runQuery(query)
     prevEnd = None
     journeys = []
