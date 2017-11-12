@@ -98,33 +98,33 @@ def addStayPoints(newPoints):
 
 def addStayPointVisits(visitPoints):
     list = []
-	latestVisit = None
+    latestVisit = None
     for stayPoint in visitPoints:
         visits = visitPoints[stayPoint]
         list.append((stayPoint.row_id, stayPoint.start, stayPoint.end))
         if not type(visits) is type(None):
             for visit in visits:
-				if type(latestVisit) == type(None):
-					latestVisit = visit
-				else if latestVisit.end < visit.end:
-					latestVisit = visit
+                if type(latestVisit) == type(None):
+                    latestVisit = visit
+                elif latestVisit.end < visit.end:
+                    latestVisit = visit
                 list.append((stayPoint.row_id, visit.start, visit.end))
     runInsertMany("INSERT OR IGNORE INTO tblStayPointVisits VALUES (?,?,?)", list)
     print("%d New visits added" %(len(list)))
-	return latestVisit
+    return latestVisit
     
 
 def performStayPointUpdate():
-	startTime = timer.time()
+    startTime = timer.time()
     date = getLatestUpdateTime("StayPointUpdate")
     points = stayPointsAfter(date)
     points = getUniquePoints(points)
     points = pairWithExistingStayPoints(points)
-	points = addStayPoints(points)
-	lastVisit = addStayPointVisits(newPoints)
-	if type(lastVisit) != type(None):
-		endTime = timer.time()
-		addUpdate("StayPointUpdate", lastVisit.end, startTime, endTime)
+    points = addStayPoints(points)
+    lastVisit = addStayPointVisits(points)
+    if type(lastVisit) != type(None):
+        endTime = timer.time()
+        ddUpdate("StayPointUpdate", lastVisit.end, startTime, endTime)
 	
 	
 

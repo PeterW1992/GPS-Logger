@@ -38,7 +38,7 @@ def writeToFile(points):
     gpxFile.write(str)
     gpxFile.close()
 	
-	def _vec2d_dist(p1, p2):
+def _vec2d_dist(p1, p2):
     return (p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2
 
 def _vec2d_sub(p1, p2):
