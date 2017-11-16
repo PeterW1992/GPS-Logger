@@ -1,10 +1,15 @@
 from Utils import *
 from DBFunc import *
 
-stayPoints = runQuery("SELECT * FROM tblStayPointVisits WHERE StartTime LIKE \'2017-11-10%\' ORDER BY startTime")
+stayPoints = runQuery("SELECT * FROM tblStayPointVisits ORDER BY startTime")
 
 for stayPoint in stayPoints:
     print(stayPoint)
 
-#gpsPoints = runQuery("SELECT * FROM tblGPSPoints WHERE dateTime LIKE \'2017-11-10%\'");
+journeys = runQuery("SELECT * FROM tblJourneys ORDER BY startTime")
+
+for journey in journeys:
+    print(journey)
+
+#gpsPoints = runQuery("SELECT * FROM tblGPSPoints WHERE dateTime LIKE \'2017-11-15%\'");
 #writeToFile(gpsPoints)

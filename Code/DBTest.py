@@ -35,7 +35,7 @@ print("\n-------------------------Test Outputs-------------------------")
 
 #performStayPointUpdate()
 #performJourneyUpdate()
-rerunUpdates()
+#rerunUpdates()
 
 #query = "SELECT * FROM tblGPSPoints WHERE strftime('%Y-%m-%dT%H:%M:%S', dateTime) BETWEEN strftime('%Y-%m-%dT%H:%M:%S',\'" + start + "\') AND strftime('%Y-%m-%dT%H:%M:%S',\'" + end + "\')"
 #points = runQuery(query)
