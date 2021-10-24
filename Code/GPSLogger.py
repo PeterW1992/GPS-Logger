@@ -8,7 +8,11 @@ from Utils import *
 import gps
 import os
 import time
+import logging
 from datetime import datetime
+
+loggingFileName = "GPSLogger_" + datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p") + ".log"
+logging.basicConfig(fileName=loggingFileName, format='%(asctime)s %(message)s')
 
 os.system("sudo killall gpsd")
 os.system("sudo gpsd /dev/ttyS0 -F /var/run/gpsd.sock")
@@ -37,8 +41,9 @@ while True:
             if len(gpsPoints) >= 60 or (type(speed) is not type(None) and speed < 0.5 and len(gpsPoints) >= 10):
                 try:
                     runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)
+					logging.info($"Inserted " + str(len(gpsPoints)) + " gps points")
                 except Exception as e:
-                    addError("Error Adding GPS Points", "GPSLogger.py", "", str(e))
+					logging.exception("Error Adding GPS Points", e)
                 gpsPoints = []
                 if not updateRan:
                     addUpdate("StartUpLog", str(datetime.now()), systemStart, time.time())
@@ -47,18 +52,17 @@ while True:
                         performStayPointUpdate()
                         updatedStays = True
                     except Exception as e:
-                        addError("StayPointUpdateError" , "GPSLogger.py", "", str(e))
+                        logging.exception("StayPointUpdateError", e)
                     try:
                         if updatedStays:
                             performJourneyUpdate()
                     except Exception as e:
-                        addError("JourneyUpdateError", "GPSLogger.py", "",  str(e))
+						logging.exception("JourneyUpdateError", e)
                     updateRan = True
     except KeyboardInterrupt:
         quit()
     except StopIteration:
         session = None
-        print("GPSD has terminated")
+		logging.exception("GPSD has terminated")
     except Exception as e:
-        print(str(e))
-        addError("GPSLogger Global Try Error", "GPSLogger.py", "",  str(e))
+		logging.exception("GPSLogger Global Try Error", e)
