@@ -41,7 +41,7 @@ while True:
             if len(gpsPoints) >= 60 or (type(speed) is not type(None) and speed < 0.5 and len(gpsPoints) >= 10):
                 try:
                     runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)
-                    logging.info($"Inserted " + str(len(gpsPoints)) + " gps points")
+                    logging.info("Inserted " + str(len(gpsPoints)) + " gps points")
                 except Exception as e:
                     logging.exception("Error Adding GPS Points", e)
                 gpsPoints = []
