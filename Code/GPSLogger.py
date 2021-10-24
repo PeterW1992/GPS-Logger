@@ -45,7 +45,7 @@ while True:
                     runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)
                     logging.info("Inserted " + str(len(gpsPoints)) + " gps points")
                 except Exception as e:
-                    logging.exception("Error Adding GPS Points", e)
+                    logging.exception("Error Adding GPS Points")
                 gpsPoints = []
                 if not updateRan:
                     addUpdate("StartUpLog", str(datetime.now()), systemStart, time.time())
@@ -54,12 +54,12 @@ while True:
                         performStayPointUpdate()
                         updatedStays = True
                     except Exception as e:
-                        logging.exception("StayPointUpdateError", e)
+                        logging.exception("StayPointUpdateError")
                     try:
                         if updatedStays:
                             performJourneyUpdate()
                     except Exception as e:
-                        logging.exception("JourneyUpdateError", e)
+                        logging.exception("JourneyUpdateError")
                     updateRan = True
     except KeyboardInterrupt:
         quit()
@@ -67,4 +67,4 @@ while True:
         session = None
         logging.exception("GPSD has terminated")
     except Exception as e:
-        logging.exception("GPSLogger Global Try Error", e)
+        logging.exception("GPSLogger Global Try Error")
