@@ -41,9 +41,9 @@ while True:
             if len(gpsPoints) >= 60 or (type(speed) is not type(None) and speed < 0.5 and len(gpsPoints) >= 10):
                 try:
                     runInsertMany("INSERT OR IGNORE INTO " + tableName + " VALUES (?,?,?,?,?,?,?,?,?,?,?)", gpsPoints)
-					logging.info($"Inserted " + str(len(gpsPoints)) + " gps points")
+                    logging.info($"Inserted " + str(len(gpsPoints)) + " gps points")
                 except Exception as e:
-					logging.exception("Error Adding GPS Points", e)
+                    logging.exception("Error Adding GPS Points", e)
                 gpsPoints = []
                 if not updateRan:
                     addUpdate("StartUpLog", str(datetime.now()), systemStart, time.time())
@@ -57,12 +57,12 @@ while True:
                         if updatedStays:
                             performJourneyUpdate()
                     except Exception as e:
-						logging.exception("JourneyUpdateError", e)
+                        logging.exception("JourneyUpdateError", e)
                     updateRan = True
     except KeyboardInterrupt:
         quit()
     except StopIteration:
         session = None
-		logging.exception("GPSD has terminated")
+        logging.exception("GPSD has terminated")
     except Exception as e:
-		logging.exception("GPSLogger Global Try Error", e)
+        logging.exception("GPSLogger Global Try Error", e)
