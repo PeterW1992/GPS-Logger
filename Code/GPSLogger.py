@@ -11,8 +11,8 @@ import time
 import logging
 from datetime import datetime
 
-loggingFileName = "GPSLogger_" + datetime.now().strftime("%Y_%m_%d-%I_%M_%S_%p") + ".log"
-logging.basicConfig(fileName=loggingFileName, format='%(asctime)s %(message)s')
+loggingFileName = 'GPSLogger_' + datetime.now().strftime('%Y_%m_%d') + '.log'
+logging.basicConfig(filename=loggingFileName, format='%(asctime)s %(message)s', encoding='utf-8', level=logging.DEBUG)
 
 os.system("sudo killall gpsd")
 os.system("sudo gpsd /dev/ttyS0 -F /var/run/gpsd.sock")

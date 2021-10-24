@@ -1,6 +1,13 @@
 import datetime as dt
+import logging
 import math
 import os
+
+loggingFileName = 'GPSLogger_' + dt.datetime.now().strftime('%Y_%m_%d') + '.log'
+logging.basicConfig(filename=loggingFileName, format='%(asctime)s %(message)s', encoding='utf-8', level=logging.DEBUG)
+
+logging.info('Test Log')
+logging.info('Test Log again')
 
 PI = math.pi
 

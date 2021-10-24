@@ -1,6 +1,8 @@
 from bluetooth import *
 from DBFunc import *
 from Utils import *
+import logging
+from datetime import datetime
 import json
 
 server_sock = None
@@ -8,6 +10,9 @@ port = None
 uuid = None
 client_sock = None
 client_info = None
+
+loggingFileName = 'BlueServer_' + datetime.now().strftime('%Y_%m_%d') + '.log'
+logging.basicConfig(filename=loggingFileName, format='%(asctime)s %(message)s', encoding='utf-8', level=logging.DEBUG)
 
 def setUp():
     global server_sock
@@ -76,8 +81,7 @@ try:
 	setUp()
 	
 except IOError:
-    addError("IOError", "BlueServer.py", "", "IO Error in BlueServer.py")
-    print("IO Error!")
+    logging.error("IOError in BlueServer.py")
     pass
 
 except KeyboardInterrupt:
