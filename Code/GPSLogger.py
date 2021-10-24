@@ -29,10 +29,10 @@ while True:
         report = None
         if type(session) is not type(None):
             report = session.next()
-            logging.info("Report:", report)
+            logging.info("Report:", str(report))
         if type(report) is not type(None) and report['class'] == 'TPV':
             data = extractReportData(report)
-            logging.info("TPV Report", data)
+            logging.info("TPV Report", str(data))
             speed = None
             if type(data) is not type(None): 
                 gpsPoints.append(data)
